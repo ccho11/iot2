@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel = "stylesheet" href="index.css" />
+  </head>
+  <body>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+      import { getDatabase, ref, set, get, onValue, child } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+       
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyBBBPGZPF7wWwAPkU5z2retubFNcQW7RmM",
+        authDomain: "index-c40b3.firebaseapp.com",
+        databaseURL: "https://index-c40b3-default-rtdb.firebaseio.com",
+        projectId: "index-c40b3",
+        storageBucket: "index-c40b3.appspot.com",
+        messagingSenderId: "321892782576",
+        appId: "1:321892782576:web:9ecd67d1c3b8a780d2cd35",
+        measurementId: "G-VGZKHCEWQR"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getDatabase(app);
+      console.log(db);
+
+        var OnButton = document.getElementById("onbutton");
+        OnButton.addEventListener("click", onBtnClick, false);
+
+        var OffButton = document.getElementById("offbutton");
+        OffButton.addEventListener("click", offBtnClick, false);
+
+        function onBtnClick(event) {
+          set(ref(db, 'LED_STATUS'), 'ON');
+          console.log("LED ON");
+          
+
+        }
+                                                       
+        function offBtnClick() {
+          set(ref(db, 'LED_STATUS'), 'OFF');
+          console.log("LED OFF");
+        }
+
+        const dbRef = ref(db, 'LED_STATUS');
+        onValue(dbRef, (snapshot) => {
+            console.log(snapshot.val());
+            OUT_TEXT.innerText = 'LED is ' + snapshot.val();
+        })
+
+        
+
+
+        
+    </script>
+
+    <h1>웹앱에서 제어하기</h1>
+    <button type="button" id = "onbutton" class="onbutton" onclick="bton()">On</button>
+    <button type="button" id = "offbutton" class="offbutton" onclick="btoff()">Off</button>
+   
+    <div>
+      <h2 id="led">LED</h2>
+      <img id ="img" src="offoff.png"/>
+    </div>
+    <script>
+      function bton(){
+          var x = document.getElementById("led");
+          x.style.color="rgb(255, 99, 71)";
+          document.getElementById("img").src = "onon.png";
+        }
+        function btoff(){
+          var x = document.getElementById("led");
+          x.style.color="rgb(0, 156, 184)";
+          document.getElementById("img").src = "offoff.png";
+        }
+    </script>
+  </body>
+</html>
